@@ -77,9 +77,13 @@ export default function ChatPage() {
 
     return (
         <div className="container mx-auto p-4">
+            <div className={`p-4 mb-4 text-white text-center ${hasFundedTier1 || hasFundedTier2 || hasFundedTier3 ? 'bg-green-500' : 'bg-red-500'}`}>
+                {hasFundedTier1 || hasFundedTier2 || hasFundedTier3 
+                    ? "You have access to this knowledge base" 
+                    : "You do not have access to this knowledge base but we will give you temporary access to try it out. Enjoy!"}
+            </div>
             <h1 className="text-2xl font-bold mb-4">{name}</h1>
             <p className="mb-4">{description}</p>
-            <p> Access: { hasFundedTier1 || hasFundedTier2 || hasFundedTier3 ? "You have access to this knowledge base" : "You do not have access to this knowledge base but we will give you temporary access to try it out. Enjoy!" } </p>
             
             <div className="mt-4 w-full max-w-2xl mx-auto">
                 <div className="flex flex-col space-y-4">
