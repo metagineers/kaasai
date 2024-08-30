@@ -7,6 +7,11 @@ import { client } from "@/app/client";
 import { openCampusCodex } from "@/app/constants/contracts";
 import { useChat } from "ai/react";
 import { Message } from "ai";
+import Markdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { dracula } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 
 export default function ChatPage() {
     const account = useActiveAccount();
@@ -67,7 +72,12 @@ export default function ChatPage() {
                 id: "system-1",
                 role: 'system',
                 content: `You are an AI assistant for the knowledge base "${name}". The description of this knowledge base is: "${description}". Please provide information and answer questions based on this context.`
-            } as Message
+            } as Message,
+            {
+                id: "assistant-1",
+                role: 'assistant',
+                content: `Welcome to the knowledge base "${name}". The description of this knowledge base is: "${description}". I am your copilot and can assist you with any questions or tasks needed to make full use of this knowledge base such as preparing Quizes, producing content and course materials, etc. How can I help?`
+            } as Message,
         ],
     });
 
@@ -87,10 +97,36 @@ export default function ChatPage() {
             
             <div className="mt-4 w-full max-w-2xl mx-auto">
                 <div className="flex flex-col space-y-4">
-                    {messages.map(m => (
+                    {messages.filter(m => m.role !== 'system').map(m => (
                         <div key={m.id} className={`${m.role === 'user' ? 'text-right' : 'text-left'}`}>
                             <span className={`inline-block p-2 rounded ${m.role === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black'}`}>
-                                {m.content}
+                                {m.role === 'user' ? (
+                                    m.content
+                                ) : (
+                                <Markdown
+                                    remarkPlugins={[remarkGfm]}
+                                    rehypePlugins={[rehypeRaw]}
+                                    components={{
+                                        code({ node, inline, className, children, ...props }: any) {
+                                        const match = /language-(\w+)/.exec(className || '');
+
+                                        return !inline && match ? (
+                                            <SyntaxHighlighter style={dracula} PreTag="div" language={match[1]} {...props}>
+                                            {String(children).replace(/\n$/, '')}
+                                            </SyntaxHighlighter>
+                                        ) : (
+                                            <code className={className} {...props}>
+                                            {children}
+                                            </code>
+                                        );
+                                        },
+                                    }}
+                                    >
+                                    {m.content}
+                                </Markdown>
+                                        
+
+                                )}
                             </span>
                         </div>
                     ))}
