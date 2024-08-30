@@ -2,13 +2,15 @@
 
 import { useParams } from "next/navigation";
 import { getContract } from "thirdweb";
-import { useReadContract } from "thirdweb/react";
+import { useActiveAccount, useReadContract } from "thirdweb/react";
 import { client } from "@/app/client";
 import { openCampusCodex } from "@/app/constants/contracts";
 import { useChat } from "ai/react";
 import { Message } from "ai";
 
 export default function ChatPage() {
+    const account = useActiveAccount();
+    
     const { campaignAddress } = useParams();
 
     const contract = getContract({
@@ -31,6 +33,33 @@ export default function ChatPage() {
         params: [] 
     });
 
+    // Get Tiers
+    const { data: tiers, isLoading: isLoadingTiers } = useReadContract({
+        contract: contract,
+        method: "function getTiers() view returns ((string name, uint256 amount, uint256 backers)[])",
+        params: [],
+    });
+
+    // See if the user has funded any tiers
+
+    const { data: hasFundedTier1, isLoading: isLoadingHasFundedTier1 } = useReadContract({ 
+          contract, 
+          method: "function hasFundedTier(address _backer, uint256 _tierIndex) view returns (bool)", 
+          params: [account?.address as string, BigInt(0)] 
+    });
+
+    const { data: hasFundedTier2, isLoading: isLoadingHasFundedTier2 } = useReadContract({ 
+        contract, 
+        method: "function hasFundedTier(address _backer, uint256 _tierIndex) view returns (bool)", 
+        params: [account?.address as string, BigInt(0)] 
+   });
+    
+   const { data: hasFundedTier3, isLoading: isLoadingHasFundedTier3 } = useReadContract({ 
+        contract, 
+        method: "function hasFundedTier(address _backer, uint256 _tierIndex) view returns (bool)", 
+        params: [account?.address as string, BigInt(0)] 
+    });
+    
     const { messages, input, handleInputChange, handleSubmit } = useChat({
         api: '/api/chat',
         initialMessages: [
@@ -42,7 +71,7 @@ export default function ChatPage() {
         ],
     });
 
-    if (isLoadingName || isLoadingDescription) {
+    if (isLoadingName || isLoadingDescription || isLoadingHasFundedTier1 || isLoadingHasFundedTier2 || isLoadingHasFundedTier3) {
         return <div>Loading knowledge base details...</div>;
     }
 
@@ -50,6 +79,7 @@ export default function ChatPage() {
         <div className="container mx-auto p-4">
             <h1 className="text-2xl font-bold mb-4">{name}</h1>
             <p className="mb-4">{description}</p>
+            <p> Access: { hasFundedTier1 || hasFundedTier2 || hasFundedTier3 ? "You have access to this knowledge base" : "You do not have access to this knowledge base but we will give you temporary access to try it out. Enjoy!" } </p>
             
             <div className="mt-4 w-full max-w-2xl mx-auto">
                 <div className="flex flex-col space-y-4">
