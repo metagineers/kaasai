@@ -132,29 +132,29 @@ const CreateCampaignModal = (
                     >Close</button>
                 </div>
                 <div className="flex flex-col">
-                    <label>Name:</label>
+                    <label>Title:</label>
                     <input 
                         type="text" 
                         value={campaignName}
                         onChange={(e) => setCampaignName(e.target.value)}
-                        placeholder="Campaign Name"
+                        placeholder="Title"
                         className="mb-4 px-4 py-2 bg-slate-300 rounded-md"
                     />
                     <label>Description:</label>
                     <textarea
                         value={campaignDescription}
                         onChange={(e) => setCampaignDescription(e.target.value)}
-                        placeholder="Campaign Description"
+                        placeholder="Description"
                         className="mb-4 px-4 py-2 bg-slate-300 rounded-md"
                     ></textarea>
-                    <label>Bonus Content Unlock Amount:</label>
+                    <label>Amount of EDU to Extend Availability:</label>
                     <input 
                         type="number"
                         value={campaignGoal}
                         onChange={(e) => handleCampaignGoal(parseInt(e.target.value))}
                         className="mb-4 px-4 py-2 bg-slate-300 rounded-md"
                     />
-                    <label>{`Campaign Length (Days)`}</label>
+                    <label>{`Availability Duration (Days)`}</label>
                     <div className="flex space-x-4">
                         <input 
                             type="number"

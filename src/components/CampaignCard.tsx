@@ -3,6 +3,7 @@ import { openCampusCodex } from "@/app/constants/contracts";
 import Link from "next/link";
 import { getContract } from "thirdweb";
 import { useReadContract } from "thirdweb/react";
+import { Button } from "@/components/ui/button";
 
 type CampaignCardProps = {
     campaignAddress: string;
@@ -55,8 +56,9 @@ export const CampaignCard: React.FC<CampaignCardProps> = ({ campaignAddress }) =
 
     return (
             <div className="flex flex-col justify-between max-w-sm p-6 bg-white border border-slate-200 rounded-lg shadow">
-                <div>
-                    {!isLoadingBalance && (
+                <div> 
+                    {/* TODO: repurpose bar */}
+                    {!isLoadingBalance && false && (
                         <div className="mb-4">
                             <div className="relative w-full h-6 bg-gray-200 rounded-full dark:bg-gray-700">
                                 <div className="h-6 bg-blue-600 rounded-full dark:bg-blue-500 text-right" style={{ width: `${balancePercentage?.toString()}%`}}>
@@ -66,25 +68,26 @@ export const CampaignCard: React.FC<CampaignCardProps> = ({ campaignAddress }) =
                                     {balancePercentage >= 100 ? "" : `${balancePercentage?.toString()}%`}
                                 </p>
                             </div>
-                        </div>
-                        
+                        </div>                        
                     )}
                     <h5 className="mb-2 text-2xl font-bold tracking-tight">{campaignName}</h5>
                     
                     <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{campaignDescription}</p>
                 </div>
                 
-                <Link
-                    href={`/campaign/${campaignAddress}`}
-                    passHref={true}
-                >
-                    <p className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                        View Info
-                        <svg className="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                        </svg>
-                    </p>
-                </Link>
+                <div className="flex justify-between items-center mt-4">
+                    <Link
+                        href={`/campaign/${campaignAddress}`}
+                        passHref={true}
+                    >
+                        <p className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            View Info
+                        </p>
+                    </Link>
+                    <Link href={`/chat/${campaignAddress}`} passHref>
+                        <Button variant="outline" className="bg-purple-600 text-white hover:bg-purple-700 hover:text-white">Query</Button>
+                    </Link>
+                </div>
             </div>
     )
 };

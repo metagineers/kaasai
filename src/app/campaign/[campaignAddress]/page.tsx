@@ -117,14 +117,14 @@ export default function CampaignPage() {
                 <p>{description}</p>
             </div>
             <div className="mb-4">
-                <p className="text-lg font-semibold">Deadline</p>
+                <p className="text-lg font-semibold">Available Till</p>
                 {!isLoadingDeadline && (
                     <p>{deadlineDate.toDateString()}</p>
                 )}
             </div>
             {!isLoadingBalance && (
                 <div className="mb-4">
-                    <p className="text-lg font-semibold">Campaign Goal: {goal?.toString()} EDU</p>
+                    <p className="text-lg font-semibold">Total Needed To Extend Availability: {goal?.toString()} EDU</p>
                     <div className="relative w-full h-6 bg-gray-200 rounded-full dark:bg-gray-700">
                         <div className="h-6 bg-blue-600 rounded-full dark:bg-blue-500 text-right" style={{ width: `${balancePercentage?.toString()}%`}}>
                             <p className="text-white dark:text-white text-xs p-1">${balance?.toString()}</p>
@@ -200,12 +200,12 @@ const CreateCampaignModal = (
                     >Close</button>
                 </div>
                 <div className="flex flex-col">
-                    <label>Tier Name:</label>
+                    <label>Credits Amount:</label>
                     <input 
                         type="text" 
                         value={tierName}
                         onChange={(e) => setTierName(e.target.value)}
-                        placeholder="Tier Name"
+                        placeholder="Credit Amount"
                         className="mb-4 px-4 py-2 bg-slate-200 rounded-md"
                     />
                     <label>Tier Cost:</label>

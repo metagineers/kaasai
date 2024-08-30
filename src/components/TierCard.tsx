@@ -19,12 +19,12 @@ export const TierCard: React.FC<TierCardProps> = ({ tier, index, contract, isEdi
         <div className="max-w-sm flex flex-col justify-between p-6 bg-white border border-slate-100 rounded-lg shadow">
             <div>
                 <div className="flex flex-row justify-between items-center">
-                    <p className="text-2xl font-semibold">{tier.name}</p>
-                    <p className="text-2xl font-semibold">${tier.amount.toString()}</p>
+                    <p className="text-2xl font-semibold">{tier.name} CREDITS</p>
+                    <p className="text-2xl font-semibold">{tier.amount.toString()} EDU</p>
                 </div>
             </div>
             <div className="flex flex-row justify-between items-end">
-                <p className="text-xs font-semibold">Total Backers: {tier.backers.toString()}</p>
+                <p className="text-xs font-semibold">Total Patrons: {tier.backers.toString()}</p>
                 <TransactionButton
                     transaction={() => prepareContractCall({
                         contract: contract,
